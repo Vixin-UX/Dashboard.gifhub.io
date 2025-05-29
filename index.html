@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Académico</title>
+  <style>
+    :root {
+      --rosado: #ff1f8e;
+      --gris-claro: #f5f5f5;
+      --azul-oscuro: #0069c0;
+      --azul-claro: #6bbef9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--gris-claro);
+      min-height: 100vh;
+    }
+
+   
+
+    .sidebar {
+      width: 220px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background-color: var(--azul-oscuro);
+      z-index: 1000;
+      box-shadow: 10px 0px 10px rgba(51, 22, 88, 0.1);
+    }
+
+    .sidebar h2 {
+      color: var(--gris-claro);
+      font-size: 25px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      padding: 10px 20px;
+      color: var(--gris-claro);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar li:hover,
+    .sidebar li a:hover {
+      background-color: var(--azul-claro);
+      color: white;
+      text-decoration: none;
+    }
+
+    .sidebar li a {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+    }
+.card-welcome {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-bottom: 50px;
+  padding: 90px 40px;
+  background-color: var(--azul-oscuro);
+  color: white;
+  text-align: center;
+}
+
+    main {
+      flex: 1;
+      padding: 30px;
+      margin-left: 220px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: var(--azul-oscuro);
+    }
+
+    h2 {
+      color: var(--gris-claro);
+    }
+
+    h3 {
+      color: var(--azul-oscuro);
+    }
+
+    .estadisticas {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      animation: fadeInUp 0.6s ease forwards;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      flex: 1;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.03);
+    }
+.card {
+  animation: fadeInUp 0.6s ease forwards;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  border-top: 5px solid transparent;
+}
+
+/* Diferentes colores para cada tipo */
+.card.estudiantes {
+  border-top-color: var(--rosado);
+}
+.card.profesores {
+  border-top-color: var(--azul-claro);
+}
+.card.cursos {
+  border-top-color: var(--morado, #4B0082); /* fallback si no está en root */
+}
+
+/* Hover con cambio de fondo y texto */
+.card.estudiantes:hover {
+  background-color: var(--rosado);
+  color: white;
+}
+.card.profesores:hover {
+  background-color: var(--azul-claro);
+  color: white;
+}
+.card.cursos:hover {
+  background-color: var(--morado, #4B0082);
+  color: white;
+}
+
+.card:hover h2,
+.card:hover p {
+  color: white;
+}
+
+/* Botón estilizado */
+.card-welcome button {
+  background-color: var(--rosado);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.card-welcome button:hover {
+  background-color: #d9006c;
+}
+.card-welcome button a {
+  color: white;
+  text-decoration: none;
+}
+    .card h2 {
+      font-size: 1.8rem;
+      color: var(--rosado);
+    }
+
+    .card p {
+      color: gray;
+      margin-top: 5px;
+    }
+
+
+    /*INICIO-TABLAS*/
+
+
+
+
+    .tabla-academica {
+  border-collapse: collapse;
+  width: 90%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tabla-academica th, .tabla-academica td {
+  border: 1px solid var(--rosado);
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.tabla-academica th {
+  background-color: var(--rosado);
+  color: white;
+}
+
+.tabla-academica tr:nth-child(even) {
+  background-color: var(--gris-claro);
+}
+
+/* ===== INICIO - CAJAS INFORMATIVAS ===== */
+.extra-info {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.caja-info {
+  flex: 1 1 45%; /* Ocupa hasta 45% del ancho disponible */
+  background-color: white;
+  border: 2px solid var(--azul-claro);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 500px; /* evita que crezcan demasiado */
+}
+
+.caja-info h4 {
+  font-size: 20px;
+  color: var(--azul-oscuro);
+  margin-bottom: 10px;
+}
+
+.caja-info p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.caja-info img {
+  width: 100%;
+height: auto; 
+ object-fit: contain;
+  border-radius: 8px;
+}
+
+
+
+
+
+
+
+   
+    thead {
+      background-color: var(--azul-claro);
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f0f8ff;
+    }
+
+    tbody tr:hover {
+      background-color: #e6f0ff;
+    }
+
+    footer {
+      background-color: var(--azul-oscuro);
+      color: white;
+      padding: 40px 20px;
+      margin-top: auto;
+      margin-left: 220px;
+    }
+
+/*CONTENT SECTION-----*/
+  .content {
+  display: none;
+  max-width: 1000px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+/* Muestra solo la sección que coincide con el enlace */
+.content:target {
+  display: block;
+}
+
+/* Si no se ha clicado ningún enlace aún, mostrar la sección #Inicio */
+body:not(:has(:target)) #Inicio {
+  display: block;
+}
+
+
+
+
+/*GALERÍA---------*/
+
+.galeria-wrapper {
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.galeria-wrapper h1 {
+  color: var(--azul-oscuro);
+  margin-bottom: 30px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.gallery-item {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.gallery-item p {
+  padding: 10px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+@media (max-width: 900px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/*REPORTES-----*/
+
+.reporte-container {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.reporte-container h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #ff1f8e;
+}
+
+.cards-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #0069c0;
+  width: 300px;
+  padding: 40px 25px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #6bbef9;
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  margin: 10px 0;
+  color: #ff1f8e;
+  font-size: 20px;
+}
+
+.card p {
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.card-center {
+  margin: 0 auto;
+}
+
+
+
+
+/*CONTACTO----*/
+
+
+/* --- Estilos para la sección de Contacto --- */
+
+  .franja-celeste {
+      background-color: #0069c0; /* Celeste */
+      color: white;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .franja-contenido {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .franja-contenido h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin: 0;
+      text-align: center;
+    }
+
+    .franja-contenido img {
+      max-height: 180px;
+      width: auto;
+      margin-left: 40px;
+    }
+
+    .prestamo-form {
+      background-color: #fff;
+      padding: 40px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ff1f8e;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+    }
+
+    .btn-enviar {
+      background-color: #ff1f8e;
+      color: white;
+      font-weight: bold;
+      margin-top: 25px;
+    }
+
+    .btn-enviar:hover {
+      background-color: #ff1f8e;
+    }
+
+
+
+
+
+/*FOOTER------*/
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      main {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .estadisticas {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      footer {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<!--INICIO -->
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Menú</h2>
+    <ul>
+      <li><a href="#Inicio">Inicio</a></li>
+      <li><a href="#Reportes">Reportes</a></li>
+      <li><a href="#Galería">Galería</a></li>
+      <li><a href="#Contacto">Contacto</a></li>
+    </ul>
+  </div>
+
+<!-- Main -->
+<main>
+  <!-- Sección Inicio -->
+  <section id="Inicio" class="content">
+     <div class="card-welcome">
+    <h2>UNIVERSIDAD CÉSAR VALLEJO: DASHBOARD</h2>
+    <p>¡Solo para los que quieren salir adelante!</p>
+    <button class="btn btn-warning"><a href="#Reportes">Mis reportes</a></button>
+  </div>
+    <h1>Dashboard Académico</h1>
+    <div class="estadisticas">
+  <div class="card estudiantes">
+    <h2>1200</h2>
+    <p>Estudiantes Registrados</p>
+  </div>
+  <div class="card profesores">
+    <h2>80</h2>
+    <p>Profesores Activos</p>
+  </div>
+  <div class="card cursos">
+    <h2>45</h2>
+    <p>Cursos Disponibles</p>
+  </div>
+</div>
+
+  <h1>Información Académica</h1>
+  </div>
+
+  <table class="tabla-academica">
+    <tr>
+      <th>Curso</th>
+      <th>Profesor</th>
+    </tr>
+    <tr>
+      <td>Matemáticas</td>
+      <td>Ing. Pérez</td>
+    </tr>
+    <tr>
+      <td>Física</td>
+      <td>Lic. García</td>
+    </tr>
+    <tr>
+      <td>Química</td>
+      <td>Dra. López</td>
+    </tr>
+  </table>
+
+  <div class="extra-info">
+    <div class="caja-info segura">
+      <h4>Talleres para ti</h4>
+      <p>Protegemos tus datos con la mejor tecnología en ciberseguridad.</p>
+      <img class="imagen-segura" src="https://somos.ucv.edu.pe/alfa-pre/assets/img/carrusel/banner-m.png?v=4" alt="Ciberseguridad" />
+    </div>
+    <div class="caja-info vip">
+      <h4>PROGRAMA ALFA</h4>
+      <p>Experimenta la universidad antes de ingresar al pregrado.</p>
+      <img class="imagen-vip" src="https://webadminportal.ucv.edu.pe/uploads/images/2024/01/Programa-Alfa-750.jpg" alt="Programa Alfa" />
+    </div>
+  </div>
+  </section>
+
+  <!-- Sección Reportes -->
+    <section id="Reportes" class="content">
+  <h2>Reportes Académicos</h2>
+
+  <!-- Fila superior: Asistencia y Calificaciones -->
+  <div class="cards-row">
+    <div class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Asistencia">
+      <h3>Asistencia</h3>
+      <p>Promedio de asistencia del semestre actual</p>
+    </div>
+    <div class="card">
+      <img src="https://cdn-icons-png.flaticon.com/512/36/36585.png" alt="Calificaciones">
+      <h3>Calificaciones</h3>
+      <p>Resumen de calificaciones y promedios</p>
+    </div>
+  </div>
+
+  <!-- Centro: Matrícula -->
+  <div class="card card-center">
+    <img src="https://cdn-icons-png.flaticon.com/512/2089/2089795.png" alt="Matrícula">
+    <h3>Matrícula</h3>
+    <p>Estado de la matrícula estudiantil</p>
+  </div>
+    </section>
+
+
+
+
+
+
+  <!-- Sección Galería -->
+  <section id="Galería" class="content">
+  <div class="galeria-wrapper">
+    <h1>Galería Académica</h1>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="https://investiga.pe/wp-content/uploads/2025/04/PORTADA-CATEDRA-VALLEJO-UCV.webp.      " alt="Conferencia 2025">
+        <p>Conferencia 2025</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi78NCN9m85GRw_6_lVmg56nlIt1hvm8Owc7VJGvHv800u-HRsMUlu7wV6newIjAb_8zM&usqp=CAU   " alt="Encuentro de directores">
+        <p>Encuentro de directores 2025</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://webadminportal.ucv.edu.pe/uploads/images/2023/08/emprendedores-junior-los-olivos-750.jpg   " alt="Estudiantes de Lima Norte">
+        <p>Estudiantes de colegios de Lima Norte</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwY17DwAouMANbk_jOk-ZdQdRDJEztRfHtjA6YLLjtJHId-McxwGC9ay21a5Gg8GX_wWo&usqp=CAU     " alt="Reconocimiento">
+        <p>Reconocimiento de guías académicos</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHNfsPU8yVxrXoWhfttAdRCbK_65a-ylTZikZrUrIseab0O5H-eAewJi4TShuRkjnm4Sg&usqp=CAU" alt="Intercambio">
+        <p>Estudiantes de intercambio</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOkV8mmoX6O18tP9m0vHIrIPkI0ddJYOzynQ&s" alt="Traducción">
+        <p>Programa de Traducción e Interpretación</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7FWxuf9acljz5ayFTDpziE3JjOGn2OK_6nQ&s" alt="Graduación">
+        <p>Graduación</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvgJ1tdlsw6xjObZCLrnf9A4t24t9VG-i2OQ&s" alt="Torneo Mobile Legends">
+        <p>Torneo Universitario de Mobile Legends</p>
+      </div>
+      <div class="gallery-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvgJ1tdlsw6xjObZCLrnf9A4t24t9VG-i2OQ&s" alt="Ceremonia de reconocimiento">
+        <p>Ceremonia de reconocimiento</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+  <!-- Sección Contacto -->
+   <section id="Contacto" class="content">
+       <div class="franja-celeste">
+    <div class="franja-contenido">
+      <h1>¡Todo gran logro tiene un inicio!</h1>
+      <img src="ucv logo.png" alt="ucv">
+    </div>
+  </div>
+
+  <div class="prestamo-form">
+    <h2>CONTACTO</h2>
+    <form>
+      <div class="mb-3">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Escribe tu nombre" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="dni">DNI</label>
+        <input type="text" class="form-control" id="dni" placeholder="Número de DNI" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" placeholder="correo@ejemplo.com" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" class="form-control" id="telefono" placeholder="Ejemplo: 987654321" required>
+      </div>
+
+      <button type="submit" class="btn btn-enviar w-100">Enviar Solicitud</button>
+    </form>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+  </section>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      © Estefany Encarnación, Carolina Muñoz, Brenda Ticlia y Giasel Violeta | Credix - 2025 | Todos los derechos reservados.
+    </div>
+  </footer>
+</body>
+</html>
